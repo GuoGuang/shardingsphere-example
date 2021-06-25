@@ -1,5 +1,6 @@
 package com.madaoo.example;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.madaoo.example.pojo.User;
 import com.madaoo.example.service.TestService;
 import com.madaoo.example.service.UserService;
@@ -87,5 +88,24 @@ public class SampleTest {
         user1.setDate(new Date());
         userService.insertTransactionFailed(user1);
         throw new RuntimeException();
+    }
+
+    @Test
+    public void find_test() throws Exception {
+/*        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.lambda().eq(User::getAge, 28);
+        User one = userService.getOne(userQueryWrapper);
+        System.out.println(one);*/
+
+        QueryWrapper<User> userQueryWrapperData = new QueryWrapper<>();
+        userQueryWrapperData.lambda().between(User::getDate, new Date(),new Date());
+        User one = userService.getOne(userQueryWrapperData);
+        System.out.println(one);
+
+    }
+
+    @Test
+    public void delete_test() throws Exception {
+        userService.removeById(1);
     }
 }
