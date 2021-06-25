@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.madaoo.example;
 
-import com.example.demo.pojo.User;
-import com.example.demo.service.TestService;
-import com.example.demo.service.UserService;
+import com.madaoo.example.pojo.User;
+import com.madaoo.example.service.TestService;
+import com.madaoo.example.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ public class SampleTest {
     @Test
     public void testSave() throws Exception {
         for (long i = 0; i < 10; i++) {
-            com.example.demo.pojo.Test test = new com.example.demo.pojo.Test();
+            com.madaoo.example.pojo.Test test = new com.madaoo.example.pojo.Test();
             test.setId(i);
             test.setText(i+"");
             test.setDate(new Date());
@@ -33,7 +33,7 @@ public class SampleTest {
     private UserService userService;
 
     @Test
-    public void testSavea() throws Exception {
+    public void insert_test() throws Exception {
         for (long i = 0; i < 10; i++) {
             User user1 = new User();
             user1.setId(i);

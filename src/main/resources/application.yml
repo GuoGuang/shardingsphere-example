@@ -39,9 +39,9 @@ spring:
               algorithm-expression: user_$->{id % 2}
 #            standard:
 #              sharding-column: date
-#              precise-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
-#              range-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
-#              complexKeys-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
+#              precise-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+#              range-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+#              complexKeys-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
     props:
       sql:
         show: true

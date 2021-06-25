@@ -1,7 +1,7 @@
-package com.example.demo.mapper;
+package com.madaoo.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.demo.pojo.User;
+import com.madaoo.example.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

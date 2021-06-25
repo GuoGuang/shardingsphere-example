@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.madaoo.example.service;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.demo.mapper.UserMapper;
-import com.example.demo.pojo.User;
+import com.madaoo.example.mapper.UserMapper;
+import com.madaoo.example.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

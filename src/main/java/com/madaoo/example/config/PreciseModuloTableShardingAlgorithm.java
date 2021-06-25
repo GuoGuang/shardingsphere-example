@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.madaoo.example.config;
 
 import com.google.common.collect.Range;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;

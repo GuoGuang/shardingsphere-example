@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.madaoo.example.config;
 
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;

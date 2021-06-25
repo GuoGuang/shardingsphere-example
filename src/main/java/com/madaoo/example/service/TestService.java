@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.madaoo.example.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.demo.mapper.TestMapper;
-import com.example.demo.pojo.Test;
+import com.madaoo.example.mapper.TestMapper;
+import com.madaoo.example.pojo.Test;
 import org.springframework.stereotype.Service;
 
 @Service

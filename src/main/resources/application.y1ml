@@ -28,34 +28,23 @@ spring:
       default-database-strategy:
         standard:
           sharding-column: text
-          precise-algorithm-class-name: com.example.demo.config.DBShardingAlgorithm
+          precise-algorithm-class-name:com.madaoo.example.config.DBShardingAlgorithm
       tables:
         test_:
           actual-data-nodes: m${1..2}.test_${0..11}
           table-strategy:
             standard:
               sharding-column: date
-              precise-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
-              range-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
-              complexKeys-algorithm-class-name: com.example.demo.config.PreciseModuloTableShardingAlgorithm
+              precise-algorithm-class-name:com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+              range-algorithm-class-name:com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+              complexKeys-algorithm-class-name:com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
           key-generator:
             column: id
             type: SNOWFLAKE
-            props:
-              worker:
-                id: 33
-    props:
-      sql:
-        show: true
 
 #mybatis配置
 mybatis-plus:
   mapperLocations: classpath*:mapper/*.xml
-  typeAliasesPackage: com.dzx.ccb.exam.exammanage.entity
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true
-
-logging:
-  level:
-    com.dzx.ccb.exam.exammanage.mapper: DEBUG
