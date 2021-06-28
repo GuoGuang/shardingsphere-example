@@ -5,20 +5,19 @@ import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
 
 import java.util.Collection;
 
+/**
+ * 自定义分库策略
+ */
 public class DBShardingAlgorithm implements PreciseShardingAlgorithm<String> {
 
-    private static final String DB_NAME = "test_db_";
+		private static final String DB_NAME_PREFIX = "tenant_";
 
-    @Override
-    public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
-        String text = preciseShardingValue.getValue();
-        switch (text){
-            case "text1":
-                return "m1";
-            case "text2":
-                return "m2";
-            default:
-                return "m2";
-        }
-    }
+		@Override
+		public String doSharding(final Collection<String> availableTargetNames, final PreciseShardingValue<String> shardingValue) {
+			String targetTable = DB_NAME_PREFIX + shardingValue.getValue();
+			if (availableTargetNames.contains(targetTable)){
+				return targetTable;
+			}
+			throw new UnsupportedOperationException("不存在的数据库: " + DB_NAME_PREFIX + shardingValue.getValue());
+		}
 }
