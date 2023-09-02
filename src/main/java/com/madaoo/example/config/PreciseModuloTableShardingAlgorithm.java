@@ -1,78 +1,38 @@
 package com.madaoo.example.config;
 
-import com.google.common.collect.Range;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.complex.ComplexKeysShardingValue;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
-import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
-import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
-public class PreciseModuloTableShardingAlgorithm implements PreciseShardingAlgorithm<Date> , RangeShardingAlgorithm<Date> , ComplexKeysShardingAlgorithm {
+public class PreciseModuloTableShardingAlgorithm implements ComplexKeysShardingAlgorithm {
 
-    @Override
-    public String doSharding(Collection<String> collection, PreciseShardingValue<Date> preciseShardingValue) {
-        //对于库的分片collection存放的是所有的库的列表，这里代表flow_01~flow_12
-        //配置的分片的sharding-column对应的值
-        Date timeValue = preciseShardingValue.getValue();
-        //分库时配置的sharding-column
-        String time = preciseShardingValue.getColumnName();
-        //需要分库的逻辑表
-        String table = preciseShardingValue.getLogicTableName();
-        if(timeValue == null){
-            throw new UnsupportedOperationException("preciseShardingValue is null");
-        }
-        //按月路由
-        for (String each : collection) {
-            Calendar ca = Calendar.getInstance();
-            ca.setTime(timeValue);
-            int month = ca.get(Calendar.MONTH);
-            if(each.equals(String.valueOf(table + month))){
-                //这里返回回去的就是最终需要查询的表名
-                return each;
-            }
-        }
-        return null;
-    }
-
-
-    @Override
-    public Collection<String> doSharding(Collection<String> collection, RangeShardingValue<Date> rangeShardingValue) {
-        Range<Date> timeValues = rangeShardingValue.getValueRange();
-        //分库时配置的sharding-column
-        String time = rangeShardingValue.getColumnName();
-        //需要分库的逻辑表
-        String table = rangeShardingValue.getLogicTableName();
-        if(timeValues == null){
-            throw new UnsupportedOperationException("preciseShardingValue is null");
-        }
-        //按月路由
-        Date upperDate = timeValues.upperEndpoint();
-        Date lowerDate = timeValues.lowerEndpoint();
-        Calendar ca = Calendar.getInstance();
-        ca.setTime(lowerDate);
-        int lowerMonth = ca.get(Calendar.MONTH);
-        ca.setTime(upperDate);
-        int upperMonth = ca.get(Calendar.MONTH);
-        List<String> tables = new ArrayList<>();
-        for(int i = lowerMonth ; i < 11 ; i ++) {
-            if(i > upperMonth){
-                break;
-            }
-            tables.add(table + i);
-        }
-        return tables;
-    }
-
-
+    /**
+     * age、gender必须有值
+     * @param collection available data sources or tables's names
+     * @param complexKeysShardingValue sharding value
+     * @return
+     */
     @Override
     public Collection<String> doSharding(Collection collection, ComplexKeysShardingValue complexKeysShardingValue) {
-        Map<String,Collection> map = complexKeysShardingValue.getColumnNameAndShardingValuesMap();
 
-
-
-        return null;
+        Map<String, Collection<String>> valuesMap = complexKeysShardingValue.getColumnNameAndShardingValuesMap();
+        Optional<String> gender = Optional.ofNullable(valuesMap.get("gender")).orElse(new ArrayList<>()).stream().findFirst();
+        Integer age = Integer.valueOf(String.valueOf(valuesMap.get("age").stream().findFirst().get()));
+        StringBuilder tableName = new StringBuilder("user");
+        //被2整除的的走user_1表，否则走，其他逻辑类似
+         boolean ageResult =(age % 2) == 0;
+        tableName.append(ageResult ? "_1" : "_0");
+        if (ageResult && gender.isPresent()) {
+            // 二次分表，在user_1表的基础
+            tableName.append((Boolean.parseBoolean(String.valueOf(gender.get()))? "_man" : "_woman"));
+        }
+        ArrayList<String> table = new ArrayList<>();
+        table.add(tableName.toString());
+        return table;
     }
+
 }

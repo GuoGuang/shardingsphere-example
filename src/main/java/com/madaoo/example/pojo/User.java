@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class User {
-    private Long id;
+    private String id;
     private String name;
-    private Long age;
+    private int age;
     private String email;
+    private Boolean gender;
     private Date date;
 }

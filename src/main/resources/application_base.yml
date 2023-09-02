@@ -1,0 +1,47 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    datasource:
+      names: db0,db1
+      db0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db0?serverTimezone=GMT%2B8&characterEncoding=UTF-8
+        username: root
+        password: 123456
+      db1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db1?serverTimezone=GMT%2B8&characterEncoding=UTF-8
+        username: root
+        password: 123456
+    sharding:
+      # 默认分库策略
+      default-database-strategy:
+        inline:
+          sharding-column: id
+          algorithm-expression: db$->{id % 2}
+      tables:
+        # 表名
+        user:
+          # 真实表,数据库、表的分库分表情况说明
+          actual-data-nodes: db${0..1}.user_${0..1}
+          # 默认分库策略
+          database-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: db$->{id % 2}
+          # 分表策略
+          table-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: user_$->{id % 2}
+#            standard:
+#              sharding-column: date
+#              precise-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+#              range-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+#              complexKeys-algorithm-class-name: com.madaoo.example.config.PreciseModuloTableShardingAlgorithm
+    props:
+      sql:
+        show: true
